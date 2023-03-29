@@ -67,7 +67,7 @@ def ranker(imgUrl):
             p = int(ptext)
         except ValueError: 
             p = 100
-            print("card.p="+ptext)
+            print("card.p=? --"+card.c)
         if p<20:    prank = 300
         elif p<100: prank = 200
         elif p<500: prank = 100

@@ -12,8 +12,9 @@ grab_retrySearchButton = 8
 
 
 ktb_rank = 25
-grab_waitButton_BaseTime  = 0.3
-grab_waitButton_DeltaTime = 0.6
+wlOutput = 0 #0=no,1=wl,2=detail
+grab_waitButton_BaseTime  = 0.4
+grab_waitButton_DeltaTime = 0.8
 
 allowChannelList = [975566641167491175,707706551829397569]
 allowUserList    = [375842448209084417,646937666251915264]

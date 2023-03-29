@@ -4,7 +4,7 @@ import time,random,json
 import asyncio
 from lib_imgRanker import ranker
 from lib_grabber import grab,connect,sendText,checkStatus
-from system import allowChannelList,allowUserList, \
+from system import allowChannelList,allowUserList,wlOutput, \
     grab_waitButton_DeltaTime,grab_waitButton_BaseTime,ktb_rank
 
 intents = discord.Intents.default()
@@ -60,9 +60,11 @@ async def on_message(msg):
     if ' is dropping ' in inmesg or "I'm dropping " in inmesg:
         if not msg.attachments: return 
         best_b,best_rank,res,res_detail = ranker(msg.attachments[0].url)
-        #logMsg = res+'\nGrab '+best_b
-        #logMsg = res_detail+'\nGrab '+best_b
-        #await msg.channel.send(logMsg)
+        if wlOutput > 0:
+            logMsg = res+'\nGrab '+best_b
+            if wlOutput==2:
+                logMsg = res_detail+'\nGrab '+best_b
+            await msg.channel.send(logMsg)
         
         if time.time()-t_grab<10*60:
             print("Grab CD"+str(10-(time.time()-t_grab)/60))

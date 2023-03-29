@@ -28,16 +28,17 @@ def match_Mask(template_path,target_path):
         match_result_b = cv2.matchTemplate(target_img[:,:,0], template_img[:,:,0], cv2.TM_CCOEFF_NORMED)
         match_result_g = cv2.matchTemplate(target_img[:,:,1], template_img[:,:,1], cv2.TM_CCOEFF_NORMED)
         match_result_r = cv2.matchTemplate(target_img[:,:,2], template_img[:,:,2], cv2.TM_CCOEFF_NORMED)
-        match_result   = (match_result_b + match_result_g + match_result_r) / 3.0
     else:
         template_masak = template_img[:, :, 3]
         match_result_b = cv2.matchTemplate(target_img[:,:,0], template_img[:,:,0], cv2.TM_CCORR_NORMED, mask=template_masak)
         match_result_g = cv2.matchTemplate(target_img[:,:,1], template_img[:,:,1], cv2.TM_CCORR_NORMED, mask=template_masak)
         match_result_r = cv2.matchTemplate(target_img[:,:,2], template_img[:,:,2], cv2.TM_CCORR_NORMED, mask=template_masak)
-        match_result   = (match_result_b + match_result_g + match_result_r) / 3.0
+    match_result_g[match_result_g == float('inf')] = 0
+    match_result_r[match_result_r == float('inf')] = 0
+    match_result_b[match_result_b == float('inf')] = 0
+    match_result   = (match_result_b + match_result_g + match_result_r) / 3.0
     # 找到匹配程度最高的像素位置
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(match_result)
-    #logging.debug("posi <%s>.",(max_loc,h_img, w_img))
     size = template_gray.shape[::-1]
     h_img, w_img = target_img.shape[:2]
     flip_max_loc = (max_loc[0],h_img-max_loc[1]-size[1])
@@ -157,6 +158,10 @@ def checkStatus():
         return checkStatus()
     if isInScreen("end"):
         runStep("","button","end","")
+        time.sleep(0.2)
+        return checkStatus()
+    if isInScreen("ErrorChannel"):
+        runStep("","click","700,100","")
         time.sleep(0.2)
         return checkStatus()
     return True
